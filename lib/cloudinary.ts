@@ -8,7 +8,7 @@ export function isCloudinaryConfigured() {
   return Boolean(cloudName && apiKey && apiSecret);
 }
 
-export async function uploadToCloudinary(file: File, resourceType: 'image' | 'raw') {
+export async function uploadToCloudinary(file: File, resourceType: 'image' | 'raw' | 'auto') {
   if (!isCloudinaryConfigured()) {
     throw new Error('Cloudinary env variables are missing');
   }

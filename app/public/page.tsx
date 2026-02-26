@@ -18,7 +18,12 @@ export default async function PublicPage({ searchParams }: { searchParams: { pag
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-semibold">Public Feed</h1>
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] muted">Explore</p>
+        <h1 className="heading-display mt-2 font-[var(--font-display)]">Public Feed</h1>
+      </div>
+
+      {posts.length === 0 && <div className="card muted">No public posts available yet.</div>}
       {posts.map((post) => <PostCard key={post._id.toString()} post={JSON.parse(JSON.stringify(post))} currentUserId={user?._id.toString()} />)}
     </section>
   );

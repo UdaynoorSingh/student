@@ -24,25 +24,37 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
     .lean();
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-      <aside className="card h-fit">
-        <h2 className="mb-2 font-semibold">Your College</h2>
-        <p>{user.college.name}</p>
-        <h3 className="mt-4 font-semibold">All communities</h3>
-        <ul className="mt-2 space-y-1 text-sm">
-          {colleges.map((college) => (
-            <li key={college._id.toString()}>
-              <a href={`/community/${college._id}`}>{college.name}</a>
-            </li>
-          ))}
-        </ul>
+    <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+      <aside className="card h-fit space-y-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] muted">Your space</p>
+          <h2 className="mt-2 text-xl font-semibold">{user.college.name}</h2>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-semibold uppercase tracking-wider muted">Communities</h3>
+          <ul className="mt-3 space-y-1.5 text-sm">
+            {colleges.map((college) => (
+              <li key={college._id.toString()}>
+                <a className="block rounded-lg px-2 py-1 hover:bg-[#f4ede1]" href={`/community/${college._id}`}>{college.name}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </aside>
+
       <section className="space-y-4">
-        <h1 className="text-2xl font-semibold">College Feed</h1>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] muted">Dashboard</p>
+          <h1 className="heading-display mt-2 font-[var(--font-display)]">College Feed</h1>
+        </div>
+
+        {posts.length === 0 && <div className="card muted">No posts yet. Be the first to post.</div>}
         {posts.map((post) => <PostCard key={post._id.toString()} post={JSON.parse(JSON.stringify(post))} currentUserId={user._id.toString()} />)}
+
         <div className="flex gap-2">
-          {page > 1 && <a className="rounded border px-3 py-1" href={`/dashboard?page=${page - 1}`}>Previous</a>}
-          <a className="rounded border px-3 py-1" href={`/dashboard?page=${page + 1}`}>Next</a>
+          {page > 1 && <a className="btn-ghost" href={`/dashboard?page=${page - 1}`}>Previous</a>}
+          <a className="btn-ghost" href={`/dashboard?page=${page + 1}`}>Next</a>
         </div>
       </section>
     </div>

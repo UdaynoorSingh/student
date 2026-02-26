@@ -79,7 +79,7 @@ export async function POST(request: Request) {
       const isPdf = isPdfFile(file);
       if (!isImage && !isPdf) continue;
 
-      const resourceType = isImage ? 'image' : 'raw';
+      const resourceType = isImage ? 'image' : 'auto';
       const result = await uploadToCloudinary(file, resourceType);
 
       uploadedFiles.push({

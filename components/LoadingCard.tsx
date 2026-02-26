@@ -1,3 +1,3 @@
 export default function LoadingCard() {
-  return <div className="card h-24 animate-pulse bg-slate-100" />;
+  return <div className="card h-28 animate-pulse bg-[#f4e8d9]" />;
 }
