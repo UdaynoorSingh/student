@@ -24,19 +24,32 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
     .lean();
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-      <aside className="card h-fit space-y-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] muted">Your space</p>
-          <h2 className="mt-2 text-xl font-semibold">{user.college.name}</h2>
+    <div className="grid gap-6 lg:grid-cols-[260px_1fr] max-w-6xl mx-auto">
+      <aside className="space-y-4">
+        <div className="card overflow-hidden !p-0 shadow-[0_0_15px_rgba(,,,)]">
+          <div className="h-16 bg-gradient-to-r from-[#295BF2] to-[#F26DDC]"></div>
+          <div className="p-4 pt-0">
+            <div className="h-12 w-12 rounded-full border-4 border-[#1A1A24] bg-[#12121A] flex items-center justify-center -mt-6 mb-2 shadow-[0_0_10px_rgba(,,,)]">
+              <span className="text-xl font-bold text-[#72F2DB] drop-shadow-[0_0_5px_rgba(,,,)]">{user.name?.[0]?.toUpperCase() || 'U'}</span>
+            </div>
+            <h2 className="text-lg font-bold text-white leading-tight drop-shadow-[0_0_2px_rgba(,,,)]">{user.name}</h2>
+            <p className="text-sm text-gray-400 mb-3">{user.role}</p>
+            <div className="pt-3 border-t border-[#2D2D3B]">
+              <p className="text-xs font-semibold text-[#F26DDC] uppercase tracking-wider mb-1">Your College</p>
+              <p className="text-sm font-bold text-gray-200">{user.college.name}</p>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <h3 className="text-sm font-semibold uppercase tracking-wider muted">Communities</h3>
-          <ul className="mt-3 space-y-1.5 text-sm">
+        <div className="card !p-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[#72F2DB] mb-3">Explore Communities</h3>
+          <ul className="space-y-1 text-sm">
             {colleges.map((college) => (
               <li key={college._id.toString()}>
-                <a className="block rounded-lg px-2 py-1 hover:bg-[#f4ede1]" href={`/community/${college._id}`}>{college.name}</a>
+                <a className="flex items-center gap-2 rounded-md px-2 py-1.5 text-gray-300 hover:bg-[#2D2D3B] hover:text-white font-medium transition-colors" href={`/community/${college._id}`}>
+                  <span className="w-6 h-6 rounded bg-[#12121A] border border-[#2D2D3B] flex items-center justify-center text-[#F26DDC] text-xs font-bold shrink-0 shadow-[0_0_5px_rgba(,,,)]">{college.name.charAt(0)}</span>
+                  <span className="truncate">{college.name}</span>
+                </a>
               </li>
             ))}
           </ul>
@@ -44,17 +57,28 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
       </aside>
 
       <section className="space-y-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] muted">Dashboard</p>
-          <h1 className="heading-display mt-2 font-[var(--font-display)]">College Feed</h1>
+        <div className="card !p-4 flex items-center justify-between mb-2">
+          <h1 className="text-xl font-bold text-white drop-shadow-[0_0_5px_rgba(,,,)]">College Feed</h1>
         </div>
 
-        {posts.length === 0 && <div className="card muted">No posts yet. Be the first to post.</div>}
-        {posts.map((post) => <PostCard key={post._id.toString()} post={JSON.parse(JSON.stringify(post))} currentUserId={user._id.toString()} />)}
+        {posts.length === 0 && (
+          <div className="card flex flex-col items-center justify-center p-12 text-center border-[#2D2D3B]">
+            <h3 className="text-lg font-bold text-white">No posts yet</h3>
+            <p className="mt-1 text-sm text-gray-400">Be the first to share something with your college.</p>
+          </div>
+        )}
+        
+        <div className="space-y-4">
+          {posts.map((post) => <PostCard key={post._id.toString()} post={JSON.parse(JSON.stringify(post))} currentUserId={user._id.toString()} />)}
+        </div>
 
-        <div className="flex gap-2">
-          {page > 1 && <a className="btn-ghost" href={`/dashboard?page=${page - 1}`}>Previous</a>}
-          <a className="btn-ghost" href={`/dashboard?page=${page + 1}`}>Next</a>
+        <div className="flex justify-between items-center pt-4">
+          {page > 1 ? (
+            <a className="btn-ghost" href={`/dashboard?page=${page - 1}`}>Previous</a>
+          ) : <div></div>}
+          {posts.length === limit && (
+            <a className="btn-ghost" href={`/dashboard?page=${page + 1}`}>Next</a>
+          )}
         </div>
       </section>
     </div>
